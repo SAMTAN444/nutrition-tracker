@@ -11,7 +11,7 @@ const Navbar = () => {
                 alt="Wellife logo"
                 className="w-20 h-20 object-contain"
                 />
-                <span className="text-2xl font-poppins text-gray-800 tracking-wide">Wellife</span>
+                <span className="text-2xl text-gray-800 tracking-wide">Wellife</span>
             </div>
 
             <div className="flex items-center gap-3">

@@ -37,7 +37,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const CalorieChart = () => {
   return (
-    <div className="w-[700px p-6 mt-10 ml-10">
+    <div className="w-[700px] p-6 mt-10 ml-10">
       <div className="bg-gray-50 p-4 rounded-xl shadow-sm">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-800">Calories</h2>
