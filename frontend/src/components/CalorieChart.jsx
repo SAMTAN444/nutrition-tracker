@@ -37,8 +37,8 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const CalorieChart = () => {
   return (
-    <div className="w-[700px] p-6 mt-10 ml-10">
-      <div className="bg-gray-50 p-4 rounded-xl shadow-sm">
+    <div className="h-full w-full">
+      <div className="bg-[#f4f4f5] p-4 rounded-2xl w-full h-full">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-800">Calories</h2>
           <select className="bg-purple-100 text-sm px-2 py-1 rounded-full text-gray-700">
@@ -46,10 +46,19 @@ const CalorieChart = () => {
           </select>
         </div>
 
-        <ResponsiveContainer width="100%" height={200}>
+        <ResponsiveContainer width="100%" height={250}>
           <BarChart data={data}>
-            <XAxis dataKey="month" stroke="#999" />
-            <YAxis stroke="#ccc" />
+            <XAxis
+              dataKey="month"
+              stroke="#71717A" // light gray (Tailwind slate-300)
+              axisLine={{ stroke: "#71717A" }}
+              tickLine={false}
+            />
+            <YAxis
+              stroke="#71717A"
+              axisLine={{ stroke: "#71717A" }}
+              tickLine={false}
+            />
             <Tooltip
               content={<CustomTooltip />}
               cursor={{ fill: "transparent" }}
@@ -68,12 +77,12 @@ const CalorieChart = () => {
                 return (
                   <rect
                     x={x}
-                    y={y}
+                    y={y - 1}
                     width={width}
                     height={height}
                     fill={color}
-                    rx={4}
-                    ry={4}
+                    rx={0}
+                    ry={0}
                   />
                 );
               }}
