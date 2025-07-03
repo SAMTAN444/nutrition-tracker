@@ -1,5 +1,6 @@
 import express from 'express';
 import axios from 'axios';
+import Food from "../models/FoodEntry.js";
 
 const router = express.Router();
 
@@ -20,17 +21,23 @@ router.post('/', async (req, res) => {
         );
         const foods = response.data.foods;
 
-        const simplified = foods.map((item) => ({
-            name: item.food_name,
-            serving: `${item.serving_qty} ${item.serving_unit}`,
-            weight_grams: item.serving_weight_grams,
-            calories: item.nf_calories,
-            protein_g: item.nf_protein,
-            fat_g: item.nf_total_fat,
-            carbs_g: item.nf_total_carbohydrate
+        const savedFoods = await Promise.all(foods.map(async (item) => {
+            const newFood = new Food({
+                name: item.food_name,
+                protein: item.nf_protein,
+                fat: item.nf_total_fat,
+                sodium: item.nf_sodium,
+                calories: item.nf_calories
+            });
+
+            await newFood.save();
+            return newFood;
         }))
 
-        res.json(simplified);
+
+        // Then respond to client
+        res.json(savedFoods);
+
     } catch (err) {
         console.error('Nutritionix API error:', err.response?.data || err.message);
         res.status(500).json({
@@ -39,5 +46,48 @@ router.post('/', async (req, res) => {
         });
     }
 });
+
+router.get('/', async (req, res) => {
+    const { date } = req.query;
+
+    try {
+        let filter = {};
+
+        if (date) {
+            const startOfDay = new Date(date);
+            startOfDay.setHours(0, 0, 0, 0);
+
+            const endOfDay = new Date(date);
+            endOfDay.setHours(23, 59, 59, 999);
+
+            filter.createdAt = { $gte: startOfDay, $lte: endOfDay };
+        }
+
+        const foods = await Food.find(filter).sort({ createdAt: -1 });
+        res.json(foods);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch food entries.' });
+    }
+});
+
+
+router.patch(`/:id`, async (req, res) => {
+    try {
+        const updated = await Food.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updated) return res.status(404).json({ message: 'Not found' });
+        res.json(updated);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to update food entry' });
+    }
+})
+
+router.delete('/:id', async (req, res) => {
+    try {
+        await Food.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Food deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to delete food item.' });
+    }
+})
 
 export default router;

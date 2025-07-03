@@ -7,6 +7,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+import { Flame } from "lucide-react";
+
 const data = [
   { month: "Jan", calories: 1200 },
   { month: "Feb", calories: 600 },
@@ -38,6 +40,11 @@ const CustomTooltip = ({ active, payload, label }) => {
 const CalorieChart = () => {
   return (
     <div className="h-full w-full">
+
+      {/* Section Title */}
+      <h2 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+        <Flame className="w-6 h-6 text-red-400" />Calories
+      </h2>
       <div className="bg-[#f4f4f5] p-4 rounded-2xl w-full h-full">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-800">Calories</h2>

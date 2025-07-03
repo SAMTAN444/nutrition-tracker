@@ -1,11 +1,9 @@
-import FoodInput from "../components/FoodInput";
 import ProteinProgress from "../components/ProteinProgress";
-import ActivityInput from "../components/ActivityInput";
 import AICoach from "../components/AICoach";
 import Navbar from "../components/Navbar";
 import CalorieChart from "../components/CalorieChart";
 import WaterIntake from "../components/WaterIntake";
-import StepsTracker from "../components/StepsTracker";
+import FoodSummary from "../components/FoodSummary";
 import { useState } from "react";
 
 const Dashboard = () => {
@@ -44,13 +42,14 @@ const Dashboard = () => {
             </div>
 
             <div className="bg-[#f4f4f5] rounded-2xl shadow p-6 flex items-center justify-center">
+              <FoodSummary />
             </div>
           </div>
 
           {/* Bottom Row: 3 Small Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="bg-[#f4f4f5] rounded-2xl shadow p-6 flex items-center justify-center">
-              <StepsTracker />
+   
             </div>
 
             <div className="bg-[#f4f4f5] rounded-2xl shadow p-6 flex items-center justify-center">
@@ -59,12 +58,7 @@ const Dashboard = () => {
 
             <div className="bg-[#f4f4f5] rounded-2xl shadow p-6 flex items-center justify-center">
               {/* Meditation or AICoach placeholder */}
-              <div className="text-xl font-semibold text-gray-700">
-                AI Coach
-              </div>
-              <p className="text-gray-500 mt-2">
-                Keep it up! You're doing great 💪
-              </p>
+
             </div>
           </div>
         </div>
