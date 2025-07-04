@@ -4,14 +4,14 @@ import icon from '../assets/wellifelogo.png';
 const Navbar = () => {
 
     return (
-        <nav className="w-full bg-gray-50 shadow-sm px-6 py-3 flex items-center justify-between fixed top-0 left-0 z-50">
+        <nav className="w-full bg-white shadow-sm px-6 py-3 flex items-center justify-between fixed top-0 left-0 z-50">
             <div className="flex items-center gap-3">
                 <img 
                 src={icon}
                 alt="Wellife logo"
                 className="w-20 h-20 object-contain"
                 />
-                <span className="text-2xl text-gray-800 tracking-wide">Wellife</span>
+                <span className="text-2xl text-black tracking-wide">Wellife</span>
             </div>
 
             <div className="flex items-center gap-3">

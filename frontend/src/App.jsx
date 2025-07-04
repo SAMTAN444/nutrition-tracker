@@ -1,11 +1,17 @@
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
 
 function App() {
   return (
-    <main className="bg-white min-h-screen">
-      <Dashboard />
-    </main>
+    <Router>
+      <main className="bg-white min-h-screen">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </main>
+    </Router>
   );
 }
 

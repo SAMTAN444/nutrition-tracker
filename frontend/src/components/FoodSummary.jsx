@@ -18,7 +18,7 @@ const FoodSummary = () => {
 
   useEffect(() => {
     fetchFoods();
-  }, []);
+  }, [selectedDate]);
 
   const fetchFoods = async () => {
     try {

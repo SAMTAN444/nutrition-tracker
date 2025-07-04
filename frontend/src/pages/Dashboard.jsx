@@ -25,38 +25,38 @@ const Dashboard = () => {
   };
   return (
     <>
-      <div className="min-h-screen bg-white pt-35 pl-20">
+      <div className="min-h-screen bg-[#fef9f5] pt-35 pl-20">
         <Navbar />
         {/* Main Content */}
         <div className="flex-1 px-10 pt-10">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-4xl font-bold text-gray-800">Hi, Sam!</h1>
-            <p className="text-lg text-gray-500 mt-1">Health Dashboard</p>
+            <h1 className="text-5xl font-extrabold text-black drop-shadow-md">Hi, Sam!</h1>
+            <p className="text-lg text-gray-700 mt-1">Health Dashboard</p>
           </div>
 
           {/* Top Row: 2 Long Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-2  gap-6 mb-6">
-            <div className="bg-[#f4f4f5] rounded-2xl shadow p-6 flex items-center justify-center">
+            <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
               <CalorieChart />
             </div>
 
-            <div className="bg-[#f4f4f5] rounded-2xl shadow p-6 flex items-center justify-center">
+            <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
               <FoodSummary />
             </div>
           </div>
 
           {/* Bottom Row: 3 Small Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-[#f4f4f5] rounded-2xl shadow p-6 flex items-center justify-center">
+            <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
    
             </div>
 
-            <div className="bg-[#f4f4f5] rounded-2xl shadow p-6 flex items-center justify-center">
+            <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
               <WaterIntake />
             </div>
 
-            <div className="bg-[#f4f4f5] rounded-2xl shadow p-6 flex items-center justify-center">
+            <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
               {/* Meditation or AICoach placeholder */}
 
             </div>

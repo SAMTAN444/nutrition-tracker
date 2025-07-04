@@ -42,13 +42,13 @@ const CalorieChart = () => {
     <div className="h-full w-full">
 
       {/* Section Title */}
-      <h2 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+      <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
         <Flame className="w-6 h-6 text-red-400" />Calories
       </h2>
-      <div className="bg-[#f4f4f5] p-4 rounded-2xl w-full h-full">
+      <div className="p-0">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-800">Calories</h2>
-          <select className="bg-purple-100 text-sm px-2 py-1 rounded-full text-gray-700">
+          <select className="bg-purple-100 text-sm px-2 py-1 rounded-full text-black">
             <option>Month</option>
           </select>
         </div>
@@ -69,6 +69,7 @@ const CalorieChart = () => {
             <Tooltip
               content={<CustomTooltip />}
               cursor={{ fill: "transparent" }}
+              
             />
 
             <Bar
