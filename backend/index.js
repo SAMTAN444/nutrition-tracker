@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import express from 'express';
 import cors from 'cors';
 import nutritionRoute from './routes/nutrition.js';
+import authRoute from './routes/auth.js';
 
 dotenv.config();
 const app = express();
@@ -10,7 +11,10 @@ const app = express();
 // MiddleWare
 app.use(cors());
 app.use(express.json());
+
+// API Routes
 app.use('/api/nutrition', nutritionRoute);
+app.use('/api/auth', authRoute);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
