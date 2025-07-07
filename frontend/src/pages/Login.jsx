@@ -90,7 +90,7 @@ const Login = () => {
 
     } catch(err) {
       MySwal.fire({
-        icon: "erorr",
+        icon: "error",
         title: "Oops",
         text: err.response?.data?.message || "Login failed."
       })

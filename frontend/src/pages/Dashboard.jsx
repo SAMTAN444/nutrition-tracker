@@ -1,9 +1,10 @@
-import ProteinProgress from "../components/ProteinProgress";
 import AICoach from "../components/AICoach";
 import Navbar from "../components/Navbar";
 import CalorieChart from "../components/CalorieChart";
 import WaterIntake from "../components/WaterIntake";
 import FoodSummary from "../components/FoodSummary";
+import BMICard from "../components/BMICard";
+
 import { useState } from "react";
 
 const Dashboard = () => {
@@ -49,7 +50,7 @@ const Dashboard = () => {
           {/* Bottom Row: 3 Small Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
-   
+              <BMICard />
             </div>
 
             <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
