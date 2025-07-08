@@ -93,7 +93,7 @@ const FoodSummary = () => {
       {/* Section Title and Date Filter */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-700 flex items-center gap-2">
-          <Apple className="w-6 h-6 text-purple-400" /> Daily Nutrition
+          <Apple className="w-6 h-6 text-purple-500" /> Daily Nutrition
         </h2>
         <input
           type="date"

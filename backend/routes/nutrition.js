@@ -27,7 +27,8 @@ router.post('/', async (req, res) => {
                 protein: item.nf_protein,
                 fat: item.nf_total_fat,
                 sodium: item.nf_sodium,
-                calories: item.nf_calories
+                calories: item.nf_calories,
+                image: item.photo?.thumb || null
             });
 
             await newFood.save();

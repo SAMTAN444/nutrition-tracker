@@ -1,10 +1,9 @@
 import AICoach from "../components/AICoach";
 import Navbar from "../components/Navbar";
 import CalorieChart from "../components/CalorieChart";
-import WaterIntake from "../components/WaterIntake";
 import FoodSummary from "../components/FoodSummary";
 import BMICard from "../components/BMICard";
-
+import FoodPreviewCard from "../components/FoodPreview";
 import { useState } from "react";
 
 const Dashboard = () => {
@@ -32,7 +31,9 @@ const Dashboard = () => {
         <div className="flex-1 px-10 pt-10">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-5xl font-extrabold text-black drop-shadow-md">Hi, Sam!</h1>
+            <h1 className="text-5xl font-extrabold text-black drop-shadow-md">
+              Hi, Sam!
+            </h1>
             <p className="text-lg text-gray-700 mt-1">Health Dashboard</p>
           </div>
 
@@ -54,12 +55,22 @@ const Dashboard = () => {
             </div>
 
             <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
-              <WaterIntake />
+              <FoodPreviewCard
+                food={{
+                  name: "Cheeseburger",
+                  image: "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg", // or any burger image
+                  calories: 303,
+                  protein: 57.1,
+                  fat: 133.4,
+                  sodium: 663,
+                  carbs: 112.5,
+                }}
+                onAdd={(food) => console.log("Added food:", food)}
+              />
             </div>
 
             <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
               {/* Meditation or AICoach placeholder */}
-
             </div>
           </div>
         </div>

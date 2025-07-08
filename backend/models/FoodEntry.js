@@ -21,6 +21,10 @@ const foodEntrySchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    image: {
+        type: String,
+        default: null,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
