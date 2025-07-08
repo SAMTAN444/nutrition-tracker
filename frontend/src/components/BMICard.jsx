@@ -22,7 +22,7 @@ const BMICard = () => {
 
     if (loading) {
         return (
-            <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center h-80 w-full max-w-md">
+            <div className="bg-white rounded-2xl p-6 flex items-center justify-center h-80 w-full max-w-md">
                 <div className="animate-spin h-10 w-10 border-t-4 border-purple-500 rounded-full" />
             </div>
         );
