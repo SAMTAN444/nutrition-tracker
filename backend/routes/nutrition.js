@@ -48,6 +48,61 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.post('/search', async (req, res) => {
+    const { food } = req.body;
+
+    try {
+        const response = await axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients',
+            { query: food },
+            {
+                headers: {
+                    'x-app-id': process.env.NUTRITIONIX_APP_ID,
+                    'x-app-key': process.env.NUTRITIONIX_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+        const results = response.data.foods.map(item => ({
+            name: item.food_name,
+            protein: item.nf_protein,
+            fat: item.nf_total_fat,
+            sodium: item.nf_sodium,
+            calories: item.nf_calories,
+            carbs: item.nf_total_carbohydrate,
+            image: item.photo?.thumb || null,
+        }));
+
+        res.json(results);
+    } catch (err) {
+        console.error('Nutrionix search failed:', err.response?.data || err.message);
+        res.status(500).json({
+            error: 'Search failed',
+            details: err.response?.data || err.message,
+        })
+    }
+})
+
+router.post('/custom', async (req, res) => {
+    try {
+        const { name, protein, fat, sodium, calories, image, grams } = req.body;
+
+        const newFood = new Food({
+            name,
+            protein,
+            fat,
+            sodium,
+            calories,
+            image,
+            grams,
+        });
+
+        await newFood.save();
+        res.status(201).json(newFood);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to save custom food entry.' });
+    }
+})
+
 router.get('/', async (req, res) => {
     const { date } = req.query;
 

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import axios from "axios";
 import { Trash2, Apple, Pencil } from "lucide-react";
 
-const FoodSummary = () => {
+const FoodSummary = forwardRef((props, ref) => {
   const [foods, setFoods] = useState([]);
   const [newFood, setNewFood] = useState("");
   const [selectedDate, setSelectedDate] = useState(
@@ -30,6 +30,11 @@ const FoodSummary = () => {
       console.error("Failed to fetch foods:", err);
     }
   };
+
+  // expose this method to the parent
+  useImperativeHandle(ref, () => ({
+    refresh: fetchFoods,
+  }));
 
   const handleAddFood = async () => {
     if (!newFood.trim()) return;
@@ -249,6 +254,6 @@ const FoodSummary = () => {
       )}
     </div>
   );
-};
+});
 
 export default FoodSummary;

@@ -4,25 +4,13 @@ import CalorieChart from "../components/CalorieChart";
 import FoodSummary from "../components/FoodSummary";
 import BMICard from "../components/BMICard";
 import FoodPreviewCard from "../components/FoodPreview";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const Dashboard = () => {
-  const [calories, setCalories] = useState(0);
-  const [protein, setProtein] = useState(50);
-  const [steps, setSteps] = useState(0);
-  const proteinGoal = 130;
+  const foodSummaryRef = useRef();
 
-  const handleFoodSubmit = (food) => {
-    // mock: replace with API call
-    const mockCalories = 350;
-    const mockProtein = 30;
-    setCalories((c) => c + mockCalories);
-    setProtein((p) => p + mockProtein);
-  };
 
-  const handleStepsSubmit = (numSteps) => {
-    setSteps(numSteps);
-  };
+
   return (
     <>
       <div className="min-h-screen bg-[#fef9f5] pt-35 pl-20">
@@ -44,7 +32,7 @@ const Dashboard = () => {
             </div>
 
             <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
-              <FoodSummary />
+              <FoodSummary ref={foodSummaryRef}/>
             </div>
           </div>
 
@@ -56,16 +44,7 @@ const Dashboard = () => {
 
             <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
               <FoodPreviewCard
-                food={{
-                  name: "Cheeseburger",
-                  image: "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg", // or any burger image
-                  calories: 303,
-                  protein: 57.1,
-                  fat: 133.4,
-                  sodium: 663,
-                  carbs: 112.5,
-                }}
-                onAdd={(food) => console.log("Added food:", food)}
+                onAdd={() => foodSummaryRef.current?.refresh()}
               />
             </div>
 

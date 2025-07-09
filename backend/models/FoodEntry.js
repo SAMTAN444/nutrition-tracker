@@ -25,10 +25,15 @@ const foodEntrySchema = new mongoose.Schema({
         type: String,
         default: null,
     },
+    grams: {
+        type: Number,
+        default: 150,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
     },
+    
 });
 
 const Food = mongoose.model("Food", foodEntrySchema);
