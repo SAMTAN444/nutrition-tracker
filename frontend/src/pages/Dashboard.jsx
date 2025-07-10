@@ -4,12 +4,19 @@ import CalorieChart from "../components/CalorieChart";
 import FoodSummary from "../components/FoodSummary";
 import BMICard from "../components/BMICard";
 import FoodPreviewCard from "../components/FoodPreview";
-import { useState, useRef } from "react";
+import NutritionAnalyzer from "../components/NutritionAnalyzer";
+import { useState, useRef, useEffect } from "react";
 
 const Dashboard = () => {
   const foodSummaryRef = useRef();
+  const analyzeRef = useRef();
+  const [summaryData, setSummaryData] = useState([]);
 
-
+  const handleAnalyzeClick = () => {
+    const date = foodSummaryRef.current?.getSummaryData();
+    if (date) setSummaryData([date]);
+    analyzeRef.current?.() // triggers handleSubmit
+  };
 
   return (
     <>
@@ -32,7 +39,7 @@ const Dashboard = () => {
             </div>
 
             <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
-              <FoodSummary ref={foodSummaryRef}/>
+              <FoodSummary ref={foodSummaryRef} />
             </div>
           </div>
 
@@ -48,8 +55,14 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
-              {/* Meditation or AICoach placeholder */}
+            <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center justify-center">
+              <NutritionAnalyzer calorieData={summaryData} onTriggerAnalyze={analyzeRef}/>
+              <button
+                onClick={handleAnalyzeClick}
+                className="mt-4 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition"
+              >
+                Analyze Intake
+              </button>
             </div>
           </div>
         </div>

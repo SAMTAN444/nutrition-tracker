@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import nutritionRoute from './routes/nutrition.js';
 import authRoute from './routes/auth.js';
+import analyzeRoute from "./routes/analyze.js";
 
 dotenv.config();
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 // API Routes
 app.use('/api/nutrition', nutritionRoute);
 app.use('/api/auth', authRoute);
+app.use("/api/analyze", analyzeRoute);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)

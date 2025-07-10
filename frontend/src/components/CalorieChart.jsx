@@ -6,23 +6,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
 import { Flame } from "lucide-react";
-
-const data = [
-  { month: "Jan", calories: 1200 },
-  { month: "Feb", calories: 600 },
-  { month: "Mar", calories: 1400 },
-  { month: "Apr", calories: 1100 },
-  { month: "May", calories: 800 },
-  { month: "Jun", calories: 1000 },
-  { month: "Jul", calories: 1200 },
-  { month: "Aug", calories: 900 },
-  { month: "Sep", calories: 1800, highlight: true },
-  { month: "Oct", calories: 1300 },
-  { month: "Nov", calories: 700 },
-  { month: "Dec", calories: 1000 },
-];
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload || !payload.length) return null;
@@ -38,25 +24,119 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const CalorieChart = () => {
+  const [data, setData] = useState([]);
+  const [range, setRange] = useState(7);
+  const [viewMode, setViewMode] = useState("day");
+
+  useEffect(() => {
+    const fetchCalories = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5175/api/nutrition/daily-calories?days=${range}`
+        );
+        const raw = res.data;
+
+        // 1. Generate list of all dates in range
+        const today = new Date();
+        const allDates = [];
+        for (let i = range - 1; i >= 0; i--) {
+          const d = new Date(today);
+          d.setDate(today.getDate() - i);
+          const iso = d.toISOString().split("T")[0];
+          allDates.push(iso);
+        }
+
+        // 2. Convert MongoDB results to a lookup
+        const calorieMap = {};
+        raw.forEach((entry) => {
+          calorieMap[entry.date] = entry.calories;
+        });
+
+        // 3. Fill missing dates with 0 and apply label + highlight
+        const filled = allDates.map((date) => ({
+          date,
+          calories: calorieMap[date] || 0,
+          label: new Date(date).toLocaleDateString("en-SG", {
+            month: "short",
+            day: "numeric",
+          }),
+          highlight: date === today.toISOString().split("T")[0],
+        }));
+
+        // 4. Group by week if needed
+        if (viewMode === "week") {
+          const grouped = {};
+          filled.forEach((entry) => {
+            const d = new Date(entry.date);
+            const weekStart = new Date(d);
+            weekStart.setDate(d.getDate() - d.getDay());
+
+            const label = weekStart.toLocaleDateString("en-SG", {
+              month: "short",
+              day: "numeric",
+            });
+
+            grouped[label] = (grouped[label] || 0) + entry.calories;
+          });
+
+          const result = Object.entries(grouped).map(([label, calories]) => ({
+            label,
+            calories,
+          }));
+
+          setData(result);
+        } else {
+          setData(filled);
+        }
+      } catch (err) {
+        console.error("Failed to fetch calorie data:", err);
+      }
+    };
+
+    fetchCalories();
+  }, [range, viewMode]);
+
   return (
     <div className="h-full w-full">
-
       {/* Section Title */}
       <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
-        <Flame className="w-6 h-6 text-red-400" />Calories
+        <Flame className="w-6 h-6 text-red-400" />
+        Calories
       </h2>
       <div className="p-0">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-gray-800">Calories</h2>
-          <select className="bg-purple-100 text-sm px-2 py-1 rounded-full text-black">
-            <option>Month</option>
+          <div className="flex gap-2">
+            <button
+              className={`px-3 py-1 rounded-full text-sm  ${
+                viewMode === "day" ? "bg-purple-300 text-black" : "bg-gray-100" 
+              }`}
+              onClick={() => setViewMode("day")}
+            >
+              By Day
+            </button>
+            <button
+              className={`px-3 py-1 rounded-full text-sm ${
+                viewMode === "week" ? "bg-purple-300 text-black" : "bg-gray-100"
+              }`}
+              onClick={() => setViewMode("week")}
+            >
+              By Week
+            </button>
+          </div>
+
+          <select
+            className="bg-purple-300 text-sm px-3 py-1 rounded-full text-black"
+            value={range}
+            onChange={(e) => setRange(Number(e.target.value))}
+          >
+            <option value={7}>Last 7 days</option>
+            <option value={14}>Last 14 days</option>
           </select>
         </div>
-
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={data}>
             <XAxis
-              dataKey="month"
+              dataKey="label"
               stroke="#71717A" // light gray (Tailwind slate-300)
               axisLine={{ stroke: "#71717A" }}
               tickLine={false}
@@ -69,7 +149,6 @@ const CalorieChart = () => {
             <Tooltip
               content={<CustomTooltip />}
               cursor={{ fill: "transparent" }}
-              
             />
 
             <Bar

@@ -34,6 +34,15 @@ const FoodSummary = forwardRef((props, ref) => {
   // expose this method to the parent
   useImperativeHandle(ref, () => ({
     refresh: fetchFoods,
+    getSummaryData: () => {
+      return {
+        calories: totalCalories,
+        protein: totalProtein,
+        fat: totalFat,
+        sodium: totalSodium,
+        date: selectedDate,
+      }
+    }
   }));
 
   const handleAddFood = async () => {

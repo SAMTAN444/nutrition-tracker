@@ -93,7 +93,7 @@ router.post('/custom', async (req, res) => {
             sodium,
             calories,
             image,
-            grams,
+            grams: 150,
         });
 
         await newFood.save();
@@ -102,6 +102,8 @@ router.post('/custom', async (req, res) => {
         res.status(500).json({ error: 'Failed to save custom food entry.' });
     }
 })
+
+
 
 router.get('/', async (req, res) => {
     const { date } = req.query;
@@ -125,6 +127,34 @@ router.get('/', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch food entries.' });
     }
 });
+
+router.get('/daily-calories', async (req, res) => {
+    const days = parseInt(req.query.days) || 14;
+
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+
+    try {
+        const foods = await Food.find({ createdAt: { $gte: cutoff }});
+
+        const caloriesByDate = {};
+
+        foods.forEach((item) => {
+            const date = new Date(item.createdAt).toISOString().split('T')[0]
+            if (!caloriesByDate[date]) caloriesByDate[date] = 0;
+            caloriesByDate[date] += item.calories;
+        });
+        const result = Object.entries(caloriesByDate)
+        .map(([date, calories]) => ({ date, calories }))
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        res.json(result);
+    } catch(err) {
+        console.error('Failed to fetch daily calories', err);
+        res.status(500).json({ error: 'Failed to fetch daily calories'});
+    }
+
+})
 
 
 router.patch(`/:id`, async (req, res) => {
