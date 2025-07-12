@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { PieChart, Pie, Cell } from "recharts";
 import { UtensilsCrossed } from "lucide-react";
-import axios from "axios";
+import axios from '../utils/axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -30,12 +30,7 @@ const FoodPreviewCard = ({ onAdd }) => {
     if (!searchTerm.trim()) return;
     setFood(null);
     try {
-      const res = await axios.post(
-        "http://localhost:5175/api/nutrition/search",
-        {
-          food: searchTerm,
-        }
-      );
+      const res = await axios.post("/nutrition/search", { food: searchTerm });
 
       if (res.data.length > 0) {
         const item = res.data[0];
@@ -79,7 +74,7 @@ const FoodPreviewCard = ({ onAdd }) => {
         grams,
       };
 
-      await axios.post("http://localhost:5175/api/nutrition/custom", payload);
+      await axios.post("/nutrition/custom", payload);
       if (onAdd) onAdd(); //  callback to refresh FoodSummary
       setGrams(100);
     } catch (err) {

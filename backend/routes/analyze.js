@@ -7,7 +7,7 @@ const router = express.Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 function calculateTDEE({ gender, weight, height, age, activityLevel }) {
-    const bmr = gender === "male" 
+    const bmr = gender === "male"
         ? 10 * weight + 6.25 * height - 5 * age + 5
         : 10 * weight + 6.25 * height - 5 * age - 161;
     return bmr * activityLevel
@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
             .map((d) => `${new Date(d.date).toDateString()}: ${d.calories} kcal`)
             .join("\n");
 
-            const prompt = `
+        const prompt = `
             You are a helpful nutrition coach.
             The user is a ${age}-year-old ${gender}.
             Their estimated maintenance level is ${Math.round(tdee)} kcal.
@@ -53,12 +53,33 @@ router.post("/", async (req, res) => {
             Be brief, clear and supportive
             `;
 
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const text = response.text();
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-            res.json({ anaylsis: text, goalCalories: Math.round(goalCalories) })
+        let text = ""
+        let success = false;
+        let attempt = 0;
+
+        while (!success && attempt < 3) {
+            try {
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                text = response.text();
+                success = true;
+            } catch (err) {
+                attempt++;
+                console.warn(`Retrying Gemini... attempt ${attempt}`)
+                await new Promise((r) => setTimeout(r, 1000));
+            }
+        }
+
+        if (!success) {
+            return res.status(503).json({
+                error: "Gemini AI is currently overloaded. Please try again shortly.",
+            })
+        }
+
+
+        res.json({ analysis: text, goalCalories: Math.round(goalCalories) })
     } catch (err) {
         console.error("Gemini analysis failed:", err);
 

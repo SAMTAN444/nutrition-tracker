@@ -1,21 +1,7 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, forwardRef, useImperativeHandle } from "react";
+import axios from '../utils/axios';
 
-const NutritionAnalyzer = ({ calorieData, onTriggerAnalyze }) => {
-  if (!calorieData || calorieData.length === 0) {
-    return (
-      <p className="text-sm text-red-500">
-        No intake data available to analyze.
-      </p>
-    );
-  }
-
-  useEffect(() => {
-    if (onTriggerAnalyze) {
-        onTriggerAnalyze.current = handleSubmit;
-    }
-  }, [onTriggerAnalyze]);
-
+const NutritionAnalyzer = forwardRef(({ calorieData }, ref) => {
   const [form, setForm] = useState({
     gender: "male",
     age: 21,
@@ -39,22 +25,29 @@ const NutritionAnalyzer = ({ calorieData, onTriggerAnalyze }) => {
   };
 
   const handleSubmit = async () => {
+    if (!calorieData || calorieData.length === 0) return;
     setLoading(true);
     try {
-      const res = await axios.post("/api/analyze", {
+      const res = await axios.post("/analyze", {
         ...form,
         data: calorieData,
       });
       setResult(res.data);
     } catch (err) {
-      console.error("Analysis error:", err);
+      console.error("Analysis error:", err.response?.data || err.message);
     }
     setLoading(false);
   };
 
+  // 👇 expose triggerAnalyze to parent via ref
+  useImperativeHandle(ref, () => ({
+    triggerAnalyze: handleSubmit,
+  }));
+
   return (
-    <div className="bg-white p-6 rounded-xl space-y-6">
+    <div className="bg-white p-6 rounded-xl space-y-6 w-full">
       <h2 className="text-xl font-bold text-purple-700">Nutrition Analysis</h2>
+
       <div className="grid grid-cols-2 gap-4 text-sm">
         <div>
           <label>Gender</label>
@@ -133,8 +126,6 @@ const NutritionAnalyzer = ({ calorieData, onTriggerAnalyze }) => {
         </div>
       </div>
 
-      
-
       {result && (
         <div className="mt-6 p-4 border rounded bg-gray-50 text-sm whitespace-pre-wrap">
           <h3 className="font-semibold text-purple-700 mb-2">
@@ -148,6 +139,6 @@ const NutritionAnalyzer = ({ calorieData, onTriggerAnalyze }) => {
       )}
     </div>
   );
-};
+});
 
 export default NutritionAnalyzer;

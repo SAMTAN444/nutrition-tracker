@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Flame } from "lucide-react";
-import axios from "axios";
+import axios from '../utils/axios';
 import { useEffect, useState } from "react";
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -31,9 +31,8 @@ const CalorieChart = () => {
   useEffect(() => {
     const fetchCalories = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5175/api/nutrition/daily-calories?days=${range}`
-        );
+        const res = await axios.get(`/nutrition/daily-calories?days=${range}`);
+
         const raw = res.data;
 
         // 1. Generate list of all dates in range

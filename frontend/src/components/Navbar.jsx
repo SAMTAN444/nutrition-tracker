@@ -35,21 +35,7 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-3">
-        <button className="w-15 h-15 rounded-full bg-purple-100 flex items-center justify-center hover:bg-purple-200 hover:scale-110 transition">
-          <Utensils className="w-6 h-6" />
-        </button>
-
-        <Link to="/dashboard">
-          <button className="w-15 h-15 rounded-full bg-purple-300 flex items-center justify-center hover:bg-purple-400 hover:scale-110 transition">
-            <Home className="w-6 h-6" />
-          </button>
-        </Link>
-
-        <Link to="/settings">
-          <button className="w-15 h-15 rounded-full bg-yellow-100 flex items-center justify-center hover:bg-yellow-200 hover:scale-110 transition">
-            <Settings className="w-6 h-6" />
-          </button>
-        </Link>
+        
 
         
         <button

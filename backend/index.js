@@ -6,6 +6,7 @@ import nutritionRoute from './routes/nutrition.js';
 import authRoute from './routes/auth.js';
 import analyzeRoute from "./routes/analyze.js";
 
+
 dotenv.config();
 const app = express();
 
@@ -19,6 +20,8 @@ app.use('/api/auth', authRoute);
 app.use("/api/analyze", analyzeRoute);
 
 // MongoDB connection
+
+// TEMP FIX – RUN ONCE TO DROP USERS
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB connected"))
 .catch(err => console.error("MongoDB connection error", err));
@@ -31,3 +34,4 @@ app.use((req, res, next) => {
 
 const PORT = 5175;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`))
+

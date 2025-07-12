@@ -1,5 +1,5 @@
 import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
-import axios from "axios";
+import axios from '../utils/axios';
 import { Trash2, Apple, Pencil } from "lucide-react";
 
 const FoodSummary = forwardRef((props, ref) => {
@@ -22,8 +22,8 @@ const FoodSummary = forwardRef((props, ref) => {
 
   const fetchFoods = async () => {
     try {
-      const res = await axios.get("http://localhost:5175/api/nutrition", {
-        params: { date: selectedDate },
+      const res = await axios.get("/nutrition", {
+        params: { data: selectedDate },
       });
       setFoods(res.data);
     } catch (err) {
@@ -48,7 +48,7 @@ const FoodSummary = forwardRef((props, ref) => {
   const handleAddFood = async () => {
     if (!newFood.trim()) return;
     try {
-      const res = await axios.post("http://localhost:5175/api/nutrition", {
+      const res = await axios.post("/nutrition", {
         food: newFood,
       });
       setFoods((prev) => [...res.data, ...prev]);
@@ -60,7 +60,7 @@ const FoodSummary = forwardRef((props, ref) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5175/api/nutrition/${id}`);
+      await axios.delete(`/nutrition/${id}`);
       setFoods((prev) => prev.filter((f) => f._id !== id));
     } catch (err) {
       console.error("Failed to delete food:", err);
@@ -79,10 +79,7 @@ const FoodSummary = forwardRef((props, ref) => {
 
   const handleEditSave = async () => {
     try {
-      const res = await axios.patch(
-        `http://localhost:5175/api/nutrition/${editItem._id}`,
-        editValues
-      );
+      const res = await axios.patch(`/nutrition/${editItem._id}`, editValues);
       setFoods((prev) =>
         prev.map((f) => (f._id === res.data._id ? res.data : f))
       );

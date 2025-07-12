@@ -1,10 +1,11 @@
 import express from 'express';
 import axios from 'axios';
 import Food from "../models/FoodEntry.js";
+import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
     const { food } = req.body;
     console.log('POST /api/nutrition hit with food:', food);
 
@@ -28,7 +29,9 @@ router.post('/', async (req, res) => {
                 fat: item.nf_total_fat,
                 sodium: item.nf_sodium,
                 calories: item.nf_calories,
-                image: item.photo?.thumb || null
+                image: item.photo?.thumb || null,
+                grams: 150,
+                user: req.user.id,
             });
 
             await newFood.save();
@@ -48,7 +51,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.post('/search', async (req, res) => {
+router.post('/search', authenticateToken, async (req, res) => {
     const { food } = req.body;
 
     try {
@@ -70,6 +73,8 @@ router.post('/search', async (req, res) => {
             calories: item.nf_calories,
             carbs: item.nf_total_carbohydrate,
             image: item.photo?.thumb || null,
+            grams: 150,
+            user: req.user.id,
         }));
 
         res.json(results);
@@ -82,7 +87,7 @@ router.post('/search', async (req, res) => {
     }
 })
 
-router.post('/custom', async (req, res) => {
+router.post('/custom', authenticateToken, async (req, res) => {
     try {
         const { name, protein, fat, sodium, calories, image, grams } = req.body;
 
@@ -93,7 +98,8 @@ router.post('/custom', async (req, res) => {
             sodium,
             calories,
             image,
-            grams: 150,
+            grams: grams || 150,
+            user: req.user.id,
         });
 
         await newFood.save();
@@ -105,11 +111,11 @@ router.post('/custom', async (req, res) => {
 
 
 
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     const { date } = req.query;
 
     try {
-        let filter = {};
+        let filter = { user: req.user.id };
 
         if (date) {
             const startOfDay = new Date(date);
@@ -128,14 +134,16 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/daily-calories', async (req, res) => {
+router.get('/daily-calories', authenticateToken, async (req, res) => {
     const days = parseInt(req.query.days) || 14;
 
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - days);
 
     try {
-        const foods = await Food.find({ createdAt: { $gte: cutoff }});
+        const foods = await Food.find({ 
+            user: req.user.id,
+            createdAt: { $gte: cutoff }});
 
         const caloriesByDate = {};
 
@@ -157,8 +165,12 @@ router.get('/daily-calories', async (req, res) => {
 })
 
 
-router.patch(`/:id`, async (req, res) => {
+router.patch(`/:id`, authenticateToken, async (req, res) => {
     try {
+        const food = await Food.findById(req.params.id);
+        if (!food || food.user.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
         const updated = await Food.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updated) return res.status(404).json({ message: 'Not found' });
         res.json(updated);
@@ -167,8 +179,12 @@ router.patch(`/:id`, async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
     try {
+        const food = await Food.findById(req.params.id);
+        if (!food || food.user.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
         await Food.findByIdAndDelete(req.params.id);
         res.json({ message: 'Food deleted successfully' });
     } catch (err) {

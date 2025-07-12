@@ -1,4 +1,3 @@
-import AICoach from "../components/AICoach";
 import Navbar from "../components/Navbar";
 import CalorieChart from "../components/CalorieChart";
 import FoodSummary from "../components/FoodSummary";
@@ -15,7 +14,7 @@ const Dashboard = () => {
   const handleAnalyzeClick = () => {
     const date = foodSummaryRef.current?.getSummaryData();
     if (date) setSummaryData([date]);
-    analyzeRef.current?.() // triggers handleSubmit
+    analyzeRef.current?.triggerAnalyze(); // triggers handleSubmit
   };
 
   return (
@@ -56,7 +55,7 @@ const Dashboard = () => {
             </div>
 
             <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center justify-center">
-              <NutritionAnalyzer calorieData={summaryData} onTriggerAnalyze={analyzeRef}/>
+              <NutritionAnalyzer calorieData={summaryData} ref={analyzeRef}/>
               <button
                 onClick={handleAnalyzeClick}
                 className="mt-4 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition"

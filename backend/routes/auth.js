@@ -65,7 +65,7 @@ router.post(
 
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
             res.status(200).json({ token, user: { id: user._id, username: user.username } });
-
+            console.log("Logged in");
     } catch(err) {
         res.status(500).json({ message: "Login failed", error: err.message });
     }
