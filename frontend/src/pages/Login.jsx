@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import monkBird from "../assets/monkBird.png";
 import monkBird2 from "../assets/monkBird2.png";
 import wellifelogo from "../assets/wellifelogo.png";
@@ -6,18 +6,35 @@ import axios from "axios";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const MySwal = withReactContent(Swal);
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [showPassword, setShowPoassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   // Form states
   const [username, setUsername ] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+
+      if (decoded.exp > currentTime) {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      localStorage.removeItem("token");
+    }
+  }, []); // Run only once on mount
 
   const handleRegister = async () => {
 
@@ -144,7 +161,7 @@ const Login = () => {
 
             <button 
               type="button"
-              onClick={() => setShowPoassword(!showPassword)}
+              onClick={() => setShowPassword(!showPassword)}
               className="text-sm text-purple-500 underline self-end"
             >
               {showPassword ? "Hide Password" : "Show Password"}

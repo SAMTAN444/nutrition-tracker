@@ -4,12 +4,15 @@ import FoodSummary from "../components/FoodSummary";
 import BMICard from "../components/BMICard";
 import FoodPreviewCard from "../components/FoodPreview";
 import NutritionAnalyzer from "../components/NutritionAnalyzer";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 
 const Dashboard = () => {
   const foodSummaryRef = useRef();
   const analyzeRef = useRef();
   const [summaryData, setSummaryData] = useState([]);
+
+  const rawUser = localStorage.getItem("user");
+  const username = rawUser ? JSON.parse(rawUser).username : "User";
 
   const handleAnalyzeClick = () => {
     const date = foodSummaryRef.current?.getSummaryData();
@@ -26,13 +29,13 @@ const Dashboard = () => {
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-5xl font-extrabold text-black drop-shadow-md">
-              Hi, Sam!
+              Hi, {username}!
             </h1>
-            <p className="text-lg text-gray-700 mt-1">Health Dashboard</p>
+            <p className="text-lg text-gray-700 mt-2">Health Dashboard</p>
           </div>
 
           {/* Top Row: 2 Long Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-2  gap-6 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-center">
               <CalorieChart />
             </div>

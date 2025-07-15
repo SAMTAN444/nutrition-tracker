@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { Utensils, Settings, LogOut, Home } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
+import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import icon from "../assets/wellifelogo.png";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -8,8 +7,6 @@ import withReactContent from "sweetalert2-react-content";
 const Navbar = () => {
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
-
-  const toggleMenu = () => setShowMenu((prev) => !prev);
 
   const handleLogout = () => {
     MySwal.fire({
@@ -19,6 +16,8 @@ const Navbar = () => {
       timer: 1500,
       showConfirmButton: false,
     }).then(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       navigate("/");
     });
   };
@@ -35,9 +34,6 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-3">
-        
-
-        
         <button
           className="w-15 h-15 rounded-full bg-gray-800 flex items-center justify-center hover:opacity-80 hover:scale-110 transition"
           onClick={handleLogout}

@@ -1,6 +1,8 @@
 import express from 'express';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
+import { authenticateToken } from '../middleware/authMiddleware.js';
+
 dotenv.config();
 
 const router = express.Router();
@@ -13,7 +15,7 @@ function calculateTDEE({ gender, weight, height, age, activityLevel }) {
     return bmr * activityLevel
 }
 
-router.post("/", async (req, res) => {
+router.post("/", authenticateToken, async (req, res) => {
     try {
         const {
             gender,

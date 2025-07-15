@@ -1,19 +1,7 @@
 import BMIGauge from "./BMIGauge";
 
 const BMIResultCard = ({ bmi, onBack }) => {
-  const getCategory = (val) => {
-    const num = parseFloat(val);
-    if (num < 16) return "Very severely underweight";
-    if (num < 17) return "Severely underweight";
-    if (num < 18.5) return "Underweight";
-    if (num < 25) return "Normal";
-    if (num < 30) return "Overweight";
-    if (num < 35) return "Obese Class I";
-    if (num < 40) return "Obese Class II";
-    return "Obese Class III";
-  };
-
-  const category = getCategory(bmi);
+  
 
   return (
     <div className="bg-white rounded-2xl p-6 w-full max-w-md text-center ">
