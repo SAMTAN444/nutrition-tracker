@@ -76,7 +76,7 @@ Throughout building this project, I learned how to:
 ```bash
 git clone https://github.com/your-username/wellife-nutrition-tracker.git
 cd wellife-nutrition-tracker
-
+```
 
 ### 2. Install dependencies
 
