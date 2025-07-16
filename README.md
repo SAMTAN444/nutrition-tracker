@@ -1,6 +1,6 @@
 # Wellife: Personal Nutrition Tracker
 
-Wellife is a full-stack nutrition tracking web application designed to help users monitor their daily food intake, visualize macro and calorie trends, calculate BMI, and receive AI-generated feedback on dietary habits. Built using React, Tailwind CSS, Express, MongoDB, and Nutritionix + AI APIs.
+Wellife is a full-stack nutrition tracking web application designed to help users monitor their daily food intake, visualize macro and calorie trends, calculate BMI, and receive AI-generated feedback on dietary habits. Built using React, Tailwind CSS, Express, MongoDB, and Nutritionix + Gemini AI APIs.
 
 ---
 
@@ -10,7 +10,7 @@ Wellife is a full-stack nutrition tracking web application designed to help user
 * **Macro Summaries**: Displays protein, fat, sodium, and calorie totals for each day
 * **Calorie Chart**: 14-day calorie trend line chart to visualize intake over time
 * **BMI Calculator**: Animated BMI gauge with category labeling (e.g., underweight, normal, overweight)
-* **AI Nutrition Analyzer**: Analyze your diet with personalized recommendations based on your goals, activity level, and macros using Gemini or OpenAI
+* **AI Nutrition Analyzer**: Analyze your diet with personalized recommendations based on your goals, activity level, and macros using Gemini AI
 * **Editable Food Entries**: Edit or delete saved entries directly from the dashboard
 * **Secure Auth**: User registration and login with hashed passwords and JWT authentication
 
@@ -133,13 +133,7 @@ backend/
 
 ---
 
-## License
-
-MIT License. Free to use and modify.
-
----
-
 ## Author
 
-Built by \[Your Name].
+Built by SAMTAN444.
 Feel free to fork, clone, and improve!
