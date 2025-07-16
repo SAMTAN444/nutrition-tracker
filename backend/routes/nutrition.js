@@ -22,6 +22,10 @@ router.post('/', authenticateToken, async (req, res) => {
         );
         const foods = response.data.foods;
 
+        if (!foods || foods.length === 0) {
+            return res.status(404).json({ message: "Food not found in Nutrionix." });
+        }
+
         const savedFoods = await Promise.all(foods.map(async (item) => {
             const newFood = new Food({
                 name: item.food_name,

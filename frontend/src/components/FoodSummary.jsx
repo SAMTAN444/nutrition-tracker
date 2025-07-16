@@ -1,6 +1,10 @@
 import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import axios from '../utils/axios';
 import { Trash2, Apple, Pencil } from "lucide-react";
+import Swal from 'sweetalert2';
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 const FoodSummary = forwardRef((props, ref) => {
   const [foods, setFoods] = useState([]);
@@ -54,7 +58,17 @@ const FoodSummary = forwardRef((props, ref) => {
       setFoods((prev) => [...res.data, ...prev]);
       setNewFood("");
     } catch (err) {
-      console.error("Failed to add food:", err);
+      const status = err.response?.status;
+      const message = err.response?.data?.message || "Failed to add food.";
+
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text:
+          status === 404
+            ? message || "No matching food found in Nutritionix."
+            : "Something went wrong. Please try again."
+      })
     }
   };
 
