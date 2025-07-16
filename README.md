@@ -167,4 +167,4 @@ backend/
 ## Author
 
 Built by SAMTAN444
-Feel free to get in touch with me at @samueltjy13@gmail.com
+Feel free to get in touch with me at samueltjy13@gmail.com
