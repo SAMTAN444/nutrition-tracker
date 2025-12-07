@@ -74,7 +74,7 @@ Throughout building this project, I learned how to:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/wellife-nutrition-tracker.git
+git clone <githuburl>
 cd wellife-nutrition-tracker
 ```
 
